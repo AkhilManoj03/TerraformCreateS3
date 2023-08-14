@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "new_bucket" {
-  bucket = "AKM_Terraform_Bucket"
+  bucket = "akm-s3-bucket"
   acl    = "private"
 
   tags = {
