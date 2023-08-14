@@ -10,21 +10,16 @@ pipeline {
 
    agent  any
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
-                 script{
-                        dir("terraform")
-                        {
-                            git "https://github.com/AkhilManoj03/TerraformCreateS3.git"
-                        }
-                    }
-                }
+                git branch: 'main', url: 'https://github.com/AkhilManoj03/TerraformCreateS3'
             }
+        }
         stage('Plan') {
             steps {
-                sh 'pwd;cd terraform/ ; /opt/homebrew/bin/terraform init'
-                sh "pwd;cd terraform/ ; /opt/homebrew/bin/terraform plan -out tfplan"
-                sh 'pwd;cd terraform/ ; /opt/homebrew/bin/terraform show -no-color tfplan > tfplan.txt'
+                sh '/opt/homebrew/bin/terraform init'
+                sh "/opt/homebrew/bin/terraform plan -out tfplan"
+                sh '/opt/homebrew/bin/terraform show -no-color tfplan > tfplan.txt'
             }
         }
         stage('Approval') {
@@ -36,7 +31,7 @@ pipeline {
 
            steps {
                script {
-                    def plan = readFile 'terraform/tfplan.txt'
+                    def plan = readFile 'tfplan.txt'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                }
@@ -45,7 +40,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform/ ; /opt/homebrew/bin/terraform apply -input=false tfplan"
+                sh "/opt/homebrew/bin/terraform apply -input=false tfplan"
             }
         }
     }
