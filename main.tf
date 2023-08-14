@@ -2,7 +2,7 @@ provider "aws" {
     region = "us-east-1"  
 }
 
-resource "aws_s3_bucket_acl" "new_bucket" {
+resource "aws_s3_bucketl" "new_bucket" {
   bucket = "AKM_Terraform_Bucket"
   acl    = "private"
 
